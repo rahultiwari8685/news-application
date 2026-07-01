@@ -7,6 +7,7 @@ import BookmarksScreen from "../screens/BookmarksScreen";
 import CategoriesScreen from "../screens/CategoriesScreen";
 import HomeScreen from "../screens/HomeScreen";
 import SettingsScreen from "../screens/SettingsScreen";
+import ShortsScreen from "../screens/ShortsScreen";
 
 const Tab = createBottomTabNavigator();
 
@@ -66,7 +67,15 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
 
       <Tab.Screen name="Categories" component={CategoriesScreen} />
-
+      <Tab.Screen
+        name="Video"
+        component={ShortsScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="play-circle-outline" color={color} size={size} />
+          ),
+        }}
+      />
       <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
 
       <Tab.Screen name="Setting" component={SettingsScreen} />

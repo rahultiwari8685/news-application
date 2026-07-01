@@ -27,7 +27,7 @@ export default function NewsDetailScreen({ route, navigation }) {
   const getNewsDetail = async () => {
     try {
       const response = await axios.get(
-        `https://api.topheadlinesnews.com/api/news/slug/${slug}`,
+        `https://api.bharattvmedia.com/api/news/slug/${slug}`,
       );
 
       if (response.data.status) {
@@ -108,7 +108,7 @@ export default function NewsDetailScreen({ route, navigation }) {
       <ScrollView showsVerticalScrollIndicator={false}>
         <Image
           source={{
-            uri: `https://api.topheadlinesnews.com/uploads/images/${news.thumbnail}`,
+            uri: `https://api.bharattvmedia.com/uploads/images/${news.thumbnail}`,
           }}
           style={styles.image}
         />

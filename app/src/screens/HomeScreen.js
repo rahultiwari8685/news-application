@@ -11,7 +11,11 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import useTheme from "../theme/useTheme";
+import BreakingTicker from "../components/Home/BreakingTicker.js";
+import CategorySlider from "../components/Home/CategorySlider.js";
+import Header from "../components/Home/Header";
+import HeroSlider from "../components/Home/HeroSlider.js";
+import useTheme from "../theme/useTheme.js";
 
 export default function HomeScreen({ navigation }) {
   const [categories, setCategories] = useState([]);
@@ -28,7 +32,7 @@ export default function HomeScreen({ navigation }) {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/categories/getAllCategory",
+        "https://api.bharattvmedia.com/api/categories/getAllCategory",
       );
 
       if (response.data.success) {
@@ -47,30 +51,21 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/news/getAllNews",
+        "https://api.bharattvmedia.com/api/news/getAllNews?limit=20",
       );
 
-      const newsArray = Array.isArray(response.data.data)
-        ? response.data.data
-        : [];
+      if (response.data.status) {
+        const newsArray = Array.isArray(response.data.data)
+          ? response.data.data
+          : [];
 
-      const fiveDaysAgo = new Date();
-      fiveDaysAgo.setDate(fiveDaysAgo.getDate() - 1);
+        // Only Text News
+        const latestNews = newsArray.filter(
+          (item) => Number(item.videoType) === 2,
+        );
 
-      const latestNews = newsArray
-        .filter((item) => {
-          if (!item.createdAt) return false;
-
-          const created = new Date(item.createdAt);
-
-          return (
-            item.videoType === 2 && // Text News Only
-            created >= fiveDaysAgo
-          );
-        })
-        .sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-
-      setNews(latestNews);
+        setNews(latestNews);
+      }
     } catch (error) {
       console.log("News Error:", error);
     } finally {
@@ -83,56 +78,26 @@ export default function HomeScreen({ navigation }) {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={styles.header}>
-          {/* <Text style={styles.logo}>Top Headlines</Text> */}
-          <Image
-            source={require("../../../assets/images/TH_Logo.png")}
-            style={styles.logo}
-          />
-          <TouchableOpacity>
-            <Ionicons
-              name="search-outline"
-              size={28}
-              color={theme.colors.primary}
-            />
-          </TouchableOpacity>
-        </View>
+        <Header navigation={navigation} />
+        <BreakingTicker />
 
         {loading ? (
           <Text style={{ marginHorizontal: 16 }}>Loading categories...</Text>
         ) : (
-          <ScrollView
-            horizontal
-            showsHorizontalScrollIndicator={false}
-            style={styles.categories}
-          >
-            {categories.map((cat) => (
-              <TouchableOpacity
-                key={cat._id}
-                style={[
-                  styles.categoryChip,
-                  {
-                    backgroundColor: theme.dark ? "#252525" : "#f2f2f2",
-                  },
-                ]}
-              >
-                <Text
-                  style={[
-                    styles.categoryText,
-                    {
-                      color: theme.colors.primary,
-                    },
-                  ]}
-                >
-                  {cat.name}
-                </Text>
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
+          <CategorySlider categories={categories} />
         )}
 
         {/* Trending / Featured News */}
-        <Text style={styles.sectionTitle}>Trending News</Text>
+        {/* <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: theme.colors.text,
+            },
+          ]}
+        >
+          Trending News
+        </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false}>
           {news.slice(0, 5).map((item) => (
             <TouchableOpacity
@@ -146,7 +111,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.bharattvmedia.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.trendingImage}
               />
@@ -155,7 +120,21 @@ export default function HomeScreen({ navigation }) {
               </View>
             </TouchableOpacity>
           ))}
-        </ScrollView>
+        </ScrollView> */}
+
+        <Text
+          style={[
+            styles.sectionTitle,
+            {
+              color: theme.colors.text,
+            },
+          ]}
+        >
+          Top Stories
+        </Text>
+
+        {/* <HeroSlider news={news.slice(0, 5)} navigation={navigation} /> */}
+        <HeroSlider news={news.slice(0, 5)} navigation={navigation} />
 
         {/* Latest Articles */}
         <Text
@@ -187,7 +166,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.bharattvmedia.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.articleImage}
               />
