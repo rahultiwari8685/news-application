@@ -1,17 +1,25 @@
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
-import { FlatList, Pressable, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 
 import useTheme from "../theme/useTheme";
 
 export default function CategoriesScreen() {
-  const [categories, setCategories] = useState([]);
-  const [loading, setLoading] = useState(true);
-
   const navigation = useNavigation();
   const { theme } = useTheme();
+
+  const [categories, setCategories] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     getCategories();
@@ -26,12 +34,22 @@ export default function CategoriesScreen() {
       if (response.data.success) {
         setCategories(response.data.data);
       }
-    } catch (error) {
-      console.log(error);
+    } catch (e) {
+      console.log(e);
     } finally {
       setLoading(false);
     }
   };
+
+  if (loading) {
+    return (
+      <View
+        style={[styles.loader, { backgroundColor: theme.colors.background }]}
+      >
+        <ActivityIndicator size="large" color="#E53935" />
+      </View>
+    );
+  }
 
   return (
     <View
@@ -42,26 +60,38 @@ export default function CategoriesScreen() {
         },
       ]}
     >
+      <StatusBar style={theme.dark ? "light" : "dark"} />
+
       <Text
         style={[
-          styles.title,
+          styles.heading,
           {
             color: theme.colors.text,
           },
         ]}
       >
-        🗂 Categories
+        Browse Categories
       </Text>
 
       <FlatList
         data={categories}
         keyExtractor={(item) => item._id}
+        numColumns={2}
+        columnWrapperStyle={{
+          justifyContent: "space-between",
+        }}
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={{
+          paddingBottom: 30,
+        }}
         renderItem={({ item }) => (
           <Pressable
-            style={[
-              styles.categoryItem,
+            android_ripple={{ color: "#ddd" }}
+            style={({ pressed }) => [
+              styles.card,
               {
-                backgroundColor: theme.dark ? "#1E1E1E" : "#F3F3F3",
+                backgroundColor: theme.dark ? "#1A1A1A" : "#fff",
+                transform: [{ scale: pressed ? 0.97 : 1 }],
               },
             ]}
             onPress={() =>
@@ -71,9 +101,14 @@ export default function CategoriesScreen() {
               })
             }
           >
+            <View style={styles.iconCircle}>
+              <Ionicons name="newspaper-outline" color="#fff" size={26} />
+            </View>
+
             <Text
+              numberOfLines={2}
               style={[
-                styles.categoryText,
+                styles.cardTitle,
                 {
                   color: theme.colors.text,
                 },
@@ -81,45 +116,82 @@ export default function CategoriesScreen() {
             >
               {item.name}
             </Text>
+
+            <View style={styles.bottom}>
+              <Text style={styles.explore}>Explore</Text>
+
+              <Ionicons name="arrow-forward" size={18} color="#E53935" />
+            </View>
           </Pressable>
         )}
       />
-
-      <StatusBar style={theme.dark ? "light" : "dark"} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  loader: {
     flex: 1,
-    padding: 20,
-    marginTop: 40,
+    justifyContent: "center",
+    alignItems: "center",
   },
 
-  title: {
-    fontSize: 24,
+  container: {
+    flex: 1,
+    paddingHorizontal: 16,
+    paddingTop: 20,
+    marginTop: 30,
+  },
+
+  heading: {
+    fontSize: 28,
     fontWeight: "700",
     marginBottom: 20,
   },
 
-  categoryItem: {
-    padding: 16,
-    borderRadius: 10,
-    marginBottom: 10,
+  card: {
+    width: "48%",
+    borderRadius: 18,
+    padding: 13,
+    marginBottom: 16,
 
     shadowColor: "#000",
     shadowOpacity: 0.08,
-    shadowRadius: 4,
+    shadowRadius: 10,
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 4,
     },
-    elevation: 3,
+
+    elevation: 6,
   },
 
-  categoryText: {
-    fontSize: 18,
-    fontWeight: "500",
+  iconCircle: {
+    width: 56,
+    height: 56,
+    borderRadius: 28,
+    backgroundColor: "#E53935",
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: 18,
+  },
+
+  cardTitle: {
+    fontSize: 17,
+    fontWeight: "700",
+    minHeight: 50,
+  },
+
+  bottom: {
+    marginTop: 18,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+
+  explore: {
+    color: "#E53935",
+    fontWeight: "700",
+    fontSize: 15,
   },
 });

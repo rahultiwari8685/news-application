@@ -29,22 +29,28 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
 
   const player = useVideoPlayer(videoUrl, (player) => {
     player.loop = false;
+
+    player.play();
   });
 
   useEffect(() => {
     if (!player) return;
 
-    if (isActive && !paused) {
+    setPaused(false);
+
+    if (isActive) {
+      player.currentTime = player.currentTime;
       player.play();
     } else {
       player.pause();
     }
-  }, [isActive, paused]);
+  }, [isActive, player]);
 
   useEffect(() => {
     if (!player) return;
 
     const subscription = player.addListener("playToEnd", () => {
+      setPaused(false);
       onVideoEnd();
     });
 
@@ -63,21 +69,40 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
     return () => ready.remove();
   }, [player]);
 
+  // useEffect(() => {
+  //   if (!player) return;
+
+  //   const interval = setInterval(() => {
+  //     if (player.currentTime != null) {
+  //       setProgress(player.currentTime);
+  //     }
+
+  //     if (player.duration != null) {
+  //       setDuration(player.duration);
+  //     }
+  //   }, 200);
+
+  //   return () => clearInterval(interval);
+  // }, []);
+
   useEffect(() => {
     if (!player) return;
 
-    const interval = setInterval(() => {
-      if (player.currentTime != null) {
-        setProgress(player.currentTime);
-      }
+    let animationFrame;
 
-      if (player.duration != null) {
-        setDuration(player.duration);
-      }
-    }, 200);
+    const updateProgress = () => {
+      setProgress(player.currentTime || 0);
+      setDuration(player.duration || 1);
 
-    return () => clearInterval(interval);
-  }, []);
+      animationFrame = requestAnimationFrame(updateProgress);
+    };
+
+    updateProgress();
+
+    return () => {
+      cancelAnimationFrame(animationFrame);
+    };
+  }, [player]);
 
   const shareNews = async () => {
     try {
@@ -109,13 +134,18 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
       <Pressable
         style={StyleSheet.absoluteFill}
         onPress={() => {
+          if (!player) return;
+
           if (paused) {
-            player.play();
+            setPaused(false);
+
+            setTimeout(() => {
+              player.play();
+            }, 50);
           } else {
             player.pause();
+            setPaused(true);
           }
-
-          setPaused(!paused);
         }}
       >
         <VideoView
@@ -123,6 +153,8 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
           style={styles.video}
           nativeControls={false}
           contentFit="cover"
+          allowsFullscreen={false}
+          allowsPictureInPicture={false}
         />
       </Pressable>
 
@@ -141,7 +173,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
           style={[
             styles.progress,
             {
-              width: `${(progress / duration) * 100}%`,
+              width: `${Math.min((progress / duration) * 100, 100)}%`,
             },
           ]}
         />
@@ -163,9 +195,9 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
           {item.title}
         </Text>
 
-        <Text numberOfLines={3} style={styles.subtitle}>
+        {/* <Text numberOfLines={3} style={styles.subtitle}>
           {item.subtitle}
-        </Text>
+        </Text> */}
 
         <View style={styles.bottomRow}>
           <View>
@@ -223,24 +255,17 @@ const styles = StyleSheet.create({
 
   progressContainer: {
     position: "absolute",
-
     bottom: 0,
-
     left: 0,
-
     width: "100%",
-
-    height: 3,
-
-    backgroundColor: "rgba(255,255,255,.25)",
-
-    zIndex: 100,
+    height: 4,
+    backgroundColor: "rgba(255,255,255,0.25)",
+    zIndex: 999,
   },
 
   progress: {
-    height: 3,
-
-    backgroundColor: "#fff",
+    height: 4,
+    backgroundColor: "#ff0000",
   },
 
   category: {
@@ -274,7 +299,7 @@ const styles = StyleSheet.create({
   bottomRow: {
     flexDirection: "row",
     justifyContent: "space-between",
-    marginTop: 25,
+    marginTop: 5,
     alignItems: "center",
   },
 
