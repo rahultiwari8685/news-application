@@ -25,7 +25,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(1);
 
-  const videoUrl = `https://api.bharattvmedia.com/uploads/videos/${item.video}`;
+  const videoUrl = `https://api.hindustantvlive.com/uploads/videos/${item.video}`;
 
   const player = useVideoPlayer(videoUrl, (player) => {
     player.loop = false;
@@ -107,7 +107,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
   const shareNews = async () => {
     try {
       await Share.share({
-        message: `${item.title}\n\nhttps://bharattvmedia.com/news/${item.slug}`,
+        message: `${item.title}\n\nhttps://hindustantvlive.com/news/${item.slug}`,
       });
     } catch (e) {
       console.log(e);

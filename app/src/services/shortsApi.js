@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://api.bharattvmedia.com";
+const API = "https://api.hindustantvlive.com";
 
 export const getShorts = async () => {
   try {

@@ -50,7 +50,7 @@ export default function HeroSlider({ news, navigation }) {
             <Image
               source={{
                 uri:
-                  "https://api.bharattvmedia.com/uploads/images/" +
+                  "https://api.hindustantvlive.com/uploads/images/" +
                   item.thumbnail,
               }}
               style={styles.image}

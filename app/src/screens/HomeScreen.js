@@ -1,4 +1,3 @@
-import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
@@ -32,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api.bharattvmedia.com/api/categories/getAllCategory",
+        "https://api.hindustantvlive.com/api/categories/getAllCategory",
       );
 
       if (response.data.success) {
@@ -51,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.bharattvmedia.com/api/news/getAllNews?limit=20",
+        "https://api.hindustantvlive.com/api/news/getAllNews?limit=20",
       );
 
       if (response.data.status) {
@@ -111,7 +110,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.bharattvmedia.com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.trendingImage}
               />
@@ -166,7 +165,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.bharattvmedia.com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.hindustantvlive.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.articleImage}
               />
@@ -205,7 +204,7 @@ export default function HomeScreen({ navigation }) {
       </ScrollView>
 
       {/* Floating Action Button */}
-      <TouchableOpacity
+      {/* <TouchableOpacity
         style={[
           styles.fab,
           {
@@ -215,7 +214,7 @@ export default function HomeScreen({ navigation }) {
         onPress={() => navigation.navigate("Bookmarks")} // example action
       >
         <Ionicons name="bookmark-outline" size={28} color="#fff" />
-      </TouchableOpacity>
+      </TouchableOpacity> */}
       <StatusBar style={theme.dark ? "light" : "dark"} />
     </View>
   );

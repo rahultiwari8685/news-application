@@ -26,7 +26,7 @@ export default function CategoryNewsScreen({ route, navigation }) {
   const getNews = async () => {
     try {
       const res = await axios.get(
-        `https://api.bharattvmedia.com/api/news/category/${categoryId}`,
+        `https://api.hindustantvlive.com/api/news/category/${categoryId}`,
       );
 
       if (res.data.status) {
@@ -92,7 +92,7 @@ export default function CategoryNewsScreen({ route, navigation }) {
             <Image
               source={{
                 uri:
-                  "https://api.bharattvmedia.com/uploads/images/" +
+                  "https://api.hindustantvlive.com/uploads/images/" +
                   item.thumbnail,
               }}
               style={styles.image}
