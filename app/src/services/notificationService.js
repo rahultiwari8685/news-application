@@ -34,10 +34,16 @@ export async function registerForPushNotifications() {
 
   if (Platform.OS === "android") {
     await Notifications.setNotificationChannelAsync("default", {
-      name: "default",
+      name: "Breaking News",
       importance: Notifications.AndroidImportance.MAX,
-      vibrationPattern: [0, 250, 250, 250],
+      vibrationPattern: [0, 300, 300, 300],
       lightColor: "#E53935",
+      lockscreenVisibility: Notifications.AndroidNotificationVisibility.PUBLIC,
+
+      enableLights: true,
+      enableVibrate: true,
+
+      bypassDnd: false,
     });
   }
 
