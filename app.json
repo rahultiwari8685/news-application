@@ -25,23 +25,33 @@
       "output": "static",
       "favicon": "./assets/images/TH_Logo.png"
     },
-    "plugins": [
-      "expo-router",
-      [
-        "expo-splash-screen",
-        {
-          "image": "./assets/images/TH_Logo.png",
-          "imageWidth": 200,
-          "resizeMode": "contain",
-          "backgroundColor": "#ffffff",
-          "dark": {
-            "backgroundColor": "#000000"
-          }
-        }
-      ],
-      "expo-video",
-      "react-native-video"
-    ],
+  "plugins": [
+  "expo-router",
+
+  [
+    "expo-splash-screen",
+    {
+      "image": "./assets/images/TH_Logo.png",
+      "imageWidth": 200,
+      "resizeMode": "contain",
+      "backgroundColor": "#ffffff",
+      "dark": {
+        "backgroundColor": "#000000"
+      }
+    }
+  ],
+
+  [
+    "expo-notifications",
+    {
+      "icon": "./assets/images/notification-icon.png",
+      "color": "#E53935"
+    }
+  ],
+
+  "expo-video",
+  "react-native-video"
+],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
