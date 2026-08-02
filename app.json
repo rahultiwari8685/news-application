@@ -12,15 +12,17 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.rahultiwari8685.topheadlines"
     },
-    "android": {
-      "package": "com.rahultiwari8685.topheadlines",
-      "edgeToEdgeEnabled": true,
-      "predictiveBackGestureEnabled": false,
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/images/TH_Logo.png",
-        "backgroundColor": "#E6F4FE"
-      }
-    },
+   "android": {
+  "package": "com.rahultiwari8685.topheadlines",
+  "googleServicesFile": "./google-services.json",
+  "edgeToEdgeEnabled": true,
+  "predictiveBackGestureEnabled": false,
+  "adaptiveIcon": {
+    "foregroundImage": "./assets/images/TH_Logo.png",
+    "backgroundColor": "#E6F4FE"
+  }
+},
+    
     "web": {
       "output": "static",
       "favicon": "./assets/images/TH_Logo.png"

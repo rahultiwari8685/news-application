@@ -2,12 +2,14 @@ import { NavigationContainer } from "@react-navigation/native";
 import { StatusBar } from "expo-status-bar";
 
 import axios from "axios";
-import { useEffect } from "react";
+import * as Notifications from "expo-notifications";
+import { useEffect, useRef } from "react";
 import { Platform } from "react-native";
 import Index from "./app/index.js";
 import ThemeProvider from "./app/src/theme/ThemeProvider.js";
 import useTheme from "./app/src/theme/useTheme.js";
 
+import { navigationRef } from "./app/src/navigation/navigationRef";
 import { registerForPushNotifications } from "./app/src/services/notificationService";
 
 function AppContent() {
@@ -17,7 +19,7 @@ function AppContent() {
     <>
       <StatusBar style={theme.dark ? "light" : "dark"} />
 
-      <NavigationContainer>
+      <NavigationContainer ref={navigationRef}>
         <Index />
       </NavigationContainer>
     </>
@@ -25,8 +27,42 @@ function AppContent() {
 }
 
 export default function App() {
+  const notificationListener = useRef();
+  const responseListener = useRef();
+
   useEffect(() => {
     initPush();
+
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        console.log("Foreground Notification");
+        console.log(notification);
+      });
+
+    responseListener.current =
+      Notifications.addNotificationResponseReceivedListener((response) => {
+        console.log("Notification Click");
+
+        const slug = response.notification.request.content.data.slug;
+
+        if (slug) {
+          navigationRef.navigate("NewsDetail", {
+            slug,
+          });
+        }
+      });
+
+    return () => {
+      if (notificationListener.current) {
+        Notifications.removeNotificationSubscription(
+          notificationListener.current,
+        );
+      }
+
+      if (responseListener.current) {
+        Notifications.removeNotificationSubscription(responseListener.current);
+      }
+    };
   }, []);
 
   const initPush = async () => {
