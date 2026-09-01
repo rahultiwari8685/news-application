@@ -18,27 +18,48 @@ export default function BreakingTicker({ navigation }) {
   const { theme } = useTheme();
   const breakingNews = useBreakingNews();
 
-  const translateX = useRef(new Animated.Value(width)).current;
+  const translateX = useRef(new Animated.Value(0)).current;
 
-  const [textWidth, setTextWidth] = useState(0);
+  const [contentWidth, setContentWidth] = useState(0);
+
+  const news = breakingNews || [];
+
+  // Create two identical sets.
+  // When the first set disappears, the second set is already there.
+  const tickerNews = [...news, ...news];
 
   useEffect(() => {
-    if (!breakingNews.length || textWidth === 0) return;
+    if (!news.length || contentWidth <= 0) {
+      return;
+    }
 
     translateX.stopAnimation();
 
-    translateX.setValue(width);
+    // Start from beginning
+    translateX.setValue(0);
 
-    Animated.loop(
+    const animation = Animated.loop(
       Animated.timing(translateX, {
-        toValue: -textWidth,
-        duration: 45000,
+        toValue: -contentWidth,
+        duration: Math.max(contentWidth * 35, 20000),
         useNativeDriver: true,
       }),
-    ).start();
-  }, [breakingNews, textWidth]);
+      {
+        resetBeforeIteration: true,
+      },
+    );
 
-  if (!breakingNews.length) return null;
+    animation.start();
+
+    return () => {
+      animation.stop();
+      translateX.stopAnimation();
+    };
+  }, [news.length, contentWidth]);
+
+  if (!news.length) {
+    return null;
+  }
 
   return (
     <View
@@ -49,58 +70,109 @@ export default function BreakingTicker({ navigation }) {
         },
       ]}
     >
-      {/* Left Breaking Label */}
-
+      {/* BREAKING LABEL */}
       <View style={styles.leftBox}>
-        <Ionicons name="flash" color="#fff" size={16} />
+        <Ionicons name="flash" color="#fff" size={17} />
 
         <Text style={styles.breakingText}>BREAKING</Text>
       </View>
 
-      {/* Marquee */}
-
+      {/* TICKER AREA */}
       <View style={styles.rightBox}>
         <Animated.View
           style={[
-            styles.marqueeContent,
+            styles.track,
             {
-              transform: [{ translateX }],
+              transform: [
+                {
+                  translateX,
+                },
+              ],
             },
           ]}
-          onLayout={(e) => {
-            setTextWidth(e.nativeEvent.layout.width);
-          }}
         >
-          {breakingNews.concat(breakingNews).map((item, index) => (
-            <TouchableOpacity
-              key={`${item._id}-${index}`}
-              onPress={() =>
-                navigation.navigate("NewsDetails", {
-                  slug: item.slug,
-                })
+          {/* FIRST SET - USED TO MEASURE WIDTH */}
+          <View
+            style={styles.newsSet}
+            onLayout={(event) => {
+              const measuredWidth = event.nativeEvent.layout.width;
+
+              if (measuredWidth > 0 && measuredWidth !== contentWidth) {
+                setContentWidth(measuredWidth);
               }
-            >
-              <Text
-                style={[
-                  styles.newsText,
-                  {
-                    color: theme.colors.text,
-                  },
-                ]}
-              >
-                🔴 {item.title}
-              </Text>
-            </TouchableOpacity>
-          ))}
+            }}
+          >
+            {news.map((item, index) => (
+              <NewsItem
+                key={`first-${item._id || item.slug || index}`}
+                item={item}
+                index={index}
+                navigation={navigation}
+                textColor={theme.colors.text}
+              />
+            ))}
+          </View>
+
+          {/* SECOND SET - MAKES THE LOOP CONTINUOUS */}
+          <View style={styles.newsSet}>
+            {news.map((item, index) => (
+              <NewsItem
+                key={`second-${item._id || item.slug || index}`}
+                item={item}
+                index={index}
+                navigation={navigation}
+                textColor={theme.colors.text}
+              />
+            ))}
+          </View>
         </Animated.View>
       </View>
     </View>
   );
 }
 
+/**
+ * Individual breaking-news item
+ */
+function NewsItem({ item, navigation, textColor }) {
+  return (
+    <TouchableOpacity
+      activeOpacity={0.7}
+      onPress={() => {
+        if (!item?.slug) {
+          return;
+        }
+
+        navigation.navigate("NewsDetails", {
+          slug: item.slug,
+        });
+      }}
+      style={styles.newsItem}
+    >
+      <View style={styles.newsRow}>
+        <View style={styles.redDot} />
+
+        <Text
+          numberOfLines={1}
+          ellipsizeMode="clip"
+          style={[
+            styles.newsText,
+            {
+              color: textColor,
+            },
+          ]}
+        >
+          {item.title}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+}
+
 const styles = StyleSheet.create({
   container: {
     height: 46,
+    width: "100%",
     flexDirection: "row",
     alignItems: "center",
     borderBottomWidth: 0.5,
@@ -109,40 +181,62 @@ const styles = StyleSheet.create({
 
   leftBox: {
     width: 120,
-    backgroundColor: "#d50000",
     height: "100%",
+    backgroundColor: "#d50000",
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
+    zIndex: 10,
+    elevation: 5,
   },
 
-  marqueeContent: {
+  breakingText: {
+    color: "#fff",
+    fontSize: 13,
+    fontWeight: "800",
+    marginLeft: 5,
+    letterSpacing: 0.5,
+  },
+
+  rightBox: {
+    flex: 1,
+    height: "100%",
+    overflow: "hidden",
+    justifyContent: "center",
+  },
+
+  track: {
     flexDirection: "row",
     alignItems: "center",
+    width: "max-content",
+  },
+
+  newsSet: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  newsItem: {
+    justifyContent: "center",
+    paddingHorizontal: 12,
+  },
+
+  newsRow: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+
+  redDot: {
+    width: 7,
+    height: 7,
+    borderRadius: 4,
+    backgroundColor: "#d50000",
+    marginRight: 7,
   },
 
   newsText: {
     fontSize: 15,
     fontWeight: "600",
-    marginRight: 60,
-  },
-
-  breakingText: {
-    color: "#fff",
-    fontWeight: "bold",
-    marginLeft: 5,
-    fontSize: 13,
-  },
-
-  rightBox: {
-    flex: 1,
-    overflow: "hidden",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
-
-  newsText: {
-    fontSize: 22,
-    fontWeight: "600",
+    includeFontPadding: false,
   },
 });

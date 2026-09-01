@@ -39,7 +39,8 @@ export default function CategorySlider({ categories }) {
 const styles = StyleSheet.create({
   container: {
     paddingHorizontal: 16,
-    marginBottom: 16,
+    marginBottom: 12,
+    marginTop: 10,
   },
 
   categoryChip: {

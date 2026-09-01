@@ -1,17 +1,15 @@
 import { NavigationContainer } from "@react-navigation/native";
-import { StatusBar } from "expo-status-bar";
-
 import axios from "axios";
-import * as Notifications from "expo-notifications";
-import { useEffect, useRef } from "react";
+import { StatusBar } from "expo-status-bar";
+import { initializeNotifications } from "./app/src/services/NotificationHandler";
+
+import { useEffect } from "react";
 import { Platform } from "react-native";
 import Index from "./app/index.js";
+import { navigationRef } from "./app/src/navigation/navigationRef";
+import { registerFCM } from "./app/src/services/fcmService";
 import ThemeProvider from "./app/src/theme/ThemeProvider.js";
 import useTheme from "./app/src/theme/useTheme.js";
-
-import { navigationRef } from "./app/src/navigation/navigationRef";
-import { registerForPushNotifications } from "./app/src/services/notificationService";
-
 function AppContent() {
   const { theme } = useTheme();
 
@@ -27,53 +25,55 @@ function AppContent() {
 }
 
 export default function App() {
-  const notificationListener = useRef();
-  const responseListener = useRef();
-
   useEffect(() => {
-    initPush();
+    async function setupNotifications() {
+      await initPush();
+      await initializeNotifications();
+    }
 
-    notificationListener.current =
-      Notifications.addNotificationReceivedListener((notification) => {
-        console.log("Foreground Notification");
-        console.log(notification);
-      });
-
-    responseListener.current =
-      Notifications.addNotificationResponseReceivedListener((response) => {
-        console.log("Notification Click");
-
-        const slug = response.notification.request.content.data.slug;
-
-        if (slug) {
-          navigationRef.navigate("NewsDetail", {
-            slug,
-          });
-        }
-      });
-
-    return () => {
-      if (notificationListener.current) {
-        Notifications.removeNotificationSubscription(
-          notificationListener.current,
-        );
-      }
-
-      if (responseListener.current) {
-        Notifications.removeNotificationSubscription(responseListener.current);
-      }
-    };
+    setupNotifications();
   }, []);
 
+  // const initPush = async () => {
+  //   const token = await registerFCM();
+
+  //   console.log("FCM Token:", token);
+
+  //   if (!token) return;
+
+  //   try {
+  //     await axios.post(
+  //       "https://api.hindustantvlive.com/api/notification/save-token",
+  //       {
+  //         token,
+  //         platform: Platform.OS,
+  //       },
+  //     );
+
+  //     console.log("Token Saved");
+  //   } catch (e) {
+  //     console.log(e.response?.data || e.message);
+  //   }
+  // };
+
   const initPush = async () => {
-    const token = await registerForPushNotifications();
+    console.log("STEP 1");
 
-    console.log("Expo Token:", token);
+    const token = await registerFCM();
+    alert(token ? "TOKEN GENERATED" : "TOKEN NULL");
 
-    if (!token) return;
+    console.log("STEP 2");
+    console.log("FCM TOKEN:", token);
+
+    if (!token) {
+      console.log("TOKEN IS NULL");
+      return;
+    }
 
     try {
-      await axios.post(
+      console.log("STEP 3");
+
+      const response = await axios.post(
         "https://api.hindustantvlive.com/api/notification/save-token",
         {
           token,
@@ -81,12 +81,14 @@ export default function App() {
         },
       );
 
-      console.log("Token Saved");
-    } catch (e) {
-      console.log(e.response?.data || e.message);
+      console.log("STEP 4");
+      console.log(response.data);
+    } catch (err) {
+      alert(err.message);
+      console.log(err);
+      return null;
     }
   };
-
   return (
     <ThemeProvider>
       <AppContent />
