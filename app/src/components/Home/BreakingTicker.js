@@ -2,7 +2,6 @@ import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef, useState } from "react";
 import {
   Animated,
-  Dimensions,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,8 +10,6 @@ import {
 
 import useBreakingNews from "../../hooks/useBreakingNews";
 import useTheme from "../../theme/useTheme";
-
-const { width } = Dimensions.get("window");
 
 export default function BreakingTicker({ navigation }) {
   const { theme } = useTheme();
@@ -23,8 +20,12 @@ export default function BreakingTicker({ navigation }) {
   const [contentWidth, setContentWidth] = useState(0);
 
   const news = Array.isArray(breakingNews)
-    ? breakingNews.filter((item) => item?.title)
+    ? breakingNews.filter((item) => item?.title && item?.slug)
     : [];
+
+  /* ==========================================
+     START MARQUEE
+  ========================================== */
 
   useEffect(() => {
     if (!news.length || contentWidth <= 0) {
@@ -42,9 +43,6 @@ export default function BreakingTicker({ navigation }) {
         duration,
         useNativeDriver: true,
       }),
-      {
-        resetBeforeIteration: true,
-      },
     );
 
     animation.start();
@@ -53,7 +51,11 @@ export default function BreakingTicker({ navigation }) {
       animation.stop();
       translateX.stopAnimation();
     };
-  }, [news.length, contentWidth, translateX]);
+  }, [news.length, contentWidth]);
+
+  /* ==========================================
+     NO NEWS
+  ========================================== */
 
   if (!news.length) {
     return null;
@@ -68,11 +70,19 @@ export default function BreakingTicker({ navigation }) {
         },
       ]}
     >
+      {/* ======================================
+          BREAKING LABEL
+      ======================================= */}
+
       <View style={styles.leftBox}>
         <Ionicons name="flash" color="#FFFFFF" size={17} />
 
         <Text style={styles.breakingText}>BREAKING</Text>
       </View>
+
+      {/* ======================================
+          SCROLLING AREA
+      ======================================= */}
 
       <View style={styles.rightBox}>
         <Animated.View
@@ -87,6 +97,8 @@ export default function BreakingTicker({ navigation }) {
             },
           ]}
         >
+          {/* FIRST SET */}
+
           <View
             style={styles.newsSet}
             onLayout={(event) => {
@@ -99,7 +111,7 @@ export default function BreakingTicker({ navigation }) {
           >
             {news.map((item, index) => (
               <NewsItem
-                key={`news-first-${item._id || item.slug || index}`}
+                key={`first-${item._id || item.slug || index}`}
                 item={item}
                 navigation={navigation}
                 textColor={theme.colors.text}
@@ -107,10 +119,12 @@ export default function BreakingTicker({ navigation }) {
             ))}
           </View>
 
+          {/* SECOND SET */}
+
           <View style={styles.newsSet}>
             {news.map((item, index) => (
               <NewsItem
-                key={`news-second-${item._id || item.slug || index}`}
+                key={`second-${item._id || item.slug || index}`}
                 item={item}
                 navigation={navigation}
                 textColor={theme.colors.text}
@@ -123,25 +137,50 @@ export default function BreakingTicker({ navigation }) {
   );
 }
 
+/* ============================================
+   NEWS ITEM
+============================================= */
+
 function NewsItem({ item, navigation, textColor }) {
   const handlePress = () => {
-    if (!item?.slug) {
-      console.log("Breaking news slug missing:", item);
+    console.log("==============================");
 
+    console.log("BREAKING NEWS CLICKED");
+
+    console.log("TITLE:", item?.title);
+
+    console.log("SLUG:", item?.slug);
+
+    console.log("NAVIGATION:", !!navigation);
+
+    console.log("==============================");
+
+    if (!item?.slug) {
+      console.log("ERROR: News slug is missing");
       return;
     }
 
-    console.log("Opening NewsDetail:", item.slug);
+    if (!navigation) {
+      console.log("ERROR: Navigation object is missing");
+      return;
+    }
 
-    navigation.navigate("NewsDetail", {
-      slug: item.slug,
-    });
+    try {
+      navigation.navigate("NewsDetail", {
+        slug: item.slug,
+      });
+    } catch (error) {
+      console.log("NAVIGATION ERROR:", error?.message);
+
+      console.log(error);
+    }
   };
 
   return (
     <TouchableOpacity
-      activeOpacity={0.7}
+      activeOpacity={0.6}
       onPress={handlePress}
+      delayPressIn={0}
       style={styles.newsItem}
     >
       <View style={styles.newsRow}>
@@ -149,7 +188,7 @@ function NewsItem({ item, navigation, textColor }) {
 
         <View style={styles.redDot} />
 
-        {/* NEWS TITLE */}
+        {/* TITLE */}
 
         <Text
           numberOfLines={1}
@@ -168,6 +207,10 @@ function NewsItem({ item, navigation, textColor }) {
   );
 }
 
+/* ============================================
+   STYLES
+============================================= */
+
 const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -181,7 +224,7 @@ const styles = StyleSheet.create({
   },
 
   leftBox: {
-    width: 80,
+    width: 100,
     height: "100%",
 
     backgroundColor: "#D50000",
@@ -197,7 +240,7 @@ const styles = StyleSheet.create({
   breakingText: {
     color: "#FFFFFF",
 
-    fontSize: 16,
+    fontSize: 12,
     fontWeight: "800",
 
     marginLeft: 5,
@@ -230,6 +273,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
 
     paddingHorizontal: 12,
+
+    /*
+     * Make sure the entire news item
+     * receives the touch.
+     */
+    minHeight: 46,
   },
 
   newsRow: {
@@ -251,7 +300,7 @@ const styles = StyleSheet.create({
   },
 
   newsText: {
-    fontSize: 15,
+    fontSize: 20,
     fontWeight: "600",
 
     includeFontPadding: false,
