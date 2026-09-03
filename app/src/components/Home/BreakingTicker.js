@@ -22,11 +22,9 @@ export default function BreakingTicker({ navigation }) {
 
   const [contentWidth, setContentWidth] = useState(0);
 
-  const news = breakingNews || [];
-
-  // Create two identical sets.
-  // When the first set disappears, the second set is already there.
-  const tickerNews = [...news, ...news];
+  const news = Array.isArray(breakingNews)
+    ? breakingNews.filter((item) => item?.title)
+    : [];
 
   useEffect(() => {
     if (!news.length || contentWidth <= 0) {
@@ -34,14 +32,14 @@ export default function BreakingTicker({ navigation }) {
     }
 
     translateX.stopAnimation();
-
-    // Start from beginning
     translateX.setValue(0);
+
+    const duration = Math.max(contentWidth * 30, 18000);
 
     const animation = Animated.loop(
       Animated.timing(translateX, {
         toValue: -contentWidth,
-        duration: Math.max(contentWidth * 35, 20000),
+        duration,
         useNativeDriver: true,
       }),
       {
@@ -55,7 +53,7 @@ export default function BreakingTicker({ navigation }) {
       animation.stop();
       translateX.stopAnimation();
     };
-  }, [news.length, contentWidth]);
+  }, [news.length, contentWidth, translateX]);
 
   if (!news.length) {
     return null;
@@ -66,18 +64,16 @@ export default function BreakingTicker({ navigation }) {
       style={[
         styles.container,
         {
-          backgroundColor: theme.dark ? "#111" : "#fff",
+          backgroundColor: theme.dark ? "#111111" : "#FFFFFF",
         },
       ]}
     >
-      {/* BREAKING LABEL */}
       <View style={styles.leftBox}>
-        <Ionicons name="flash" color="#fff" size={17} />
+        <Ionicons name="flash" color="#FFFFFF" size={17} />
 
         <Text style={styles.breakingText}>BREAKING</Text>
       </View>
 
-      {/* TICKER AREA */}
       <View style={styles.rightBox}>
         <Animated.View
           style={[
@@ -91,7 +87,6 @@ export default function BreakingTicker({ navigation }) {
             },
           ]}
         >
-          {/* FIRST SET - USED TO MEASURE WIDTH */}
           <View
             style={styles.newsSet}
             onLayout={(event) => {
@@ -104,22 +99,19 @@ export default function BreakingTicker({ navigation }) {
           >
             {news.map((item, index) => (
               <NewsItem
-                key={`first-${item._id || item.slug || index}`}
+                key={`news-first-${item._id || item.slug || index}`}
                 item={item}
-                index={index}
                 navigation={navigation}
                 textColor={theme.colors.text}
               />
             ))}
           </View>
 
-          {/* SECOND SET - MAKES THE LOOP CONTINUOUS */}
           <View style={styles.newsSet}>
             {news.map((item, index) => (
               <NewsItem
-                key={`second-${item._id || item.slug || index}`}
+                key={`news-second-${item._id || item.slug || index}`}
                 item={item}
-                index={index}
                 navigation={navigation}
                 textColor={theme.colors.text}
               />
@@ -131,26 +123,33 @@ export default function BreakingTicker({ navigation }) {
   );
 }
 
-/**
- * Individual breaking-news item
- */
 function NewsItem({ item, navigation, textColor }) {
+  const handlePress = () => {
+    if (!item?.slug) {
+      console.log("Breaking news slug missing:", item);
+
+      return;
+    }
+
+    console.log("Opening NewsDetail:", item.slug);
+
+    navigation.navigate("NewsDetail", {
+      slug: item.slug,
+    });
+  };
+
   return (
     <TouchableOpacity
       activeOpacity={0.7}
-      onPress={() => {
-        if (!item?.slug) {
-          return;
-        }
-
-        navigation.navigate("NewsDetails", {
-          slug: item.slug,
-        });
-      }}
+      onPress={handlePress}
       style={styles.newsItem}
     >
       <View style={styles.newsRow}>
+        {/* RED DOT */}
+
         <View style={styles.redDot} />
+
+        {/* NEWS TITLE */}
 
         <Text
           numberOfLines={1}
@@ -171,44 +170,55 @@ function NewsItem({ item, navigation, textColor }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: 46,
     width: "100%",
+    height: 46,
+
     flexDirection: "row",
     alignItems: "center",
+
     borderBottomWidth: 0.5,
-    borderBottomColor: "#ddd",
+    borderBottomColor: "#DDDDDD",
   },
 
   leftBox: {
-    width: 120,
+    width: 80,
     height: "100%",
-    backgroundColor: "#d50000",
-    justifyContent: "center",
-    alignItems: "center",
+
+    backgroundColor: "#D50000",
+
     flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "center",
+
     zIndex: 10,
     elevation: 5,
   },
 
   breakingText: {
-    color: "#fff",
-    fontSize: 13,
+    color: "#FFFFFF",
+
+    fontSize: 16,
     fontWeight: "800",
+
     marginLeft: 5,
+
     letterSpacing: 0.5,
   },
 
   rightBox: {
     flex: 1,
     height: "100%",
+
     overflow: "hidden",
+
     justifyContent: "center",
   },
 
   track: {
     flexDirection: "row",
     alignItems: "center",
-    width: "max-content",
+
+    alignSelf: "flex-start",
   },
 
   newsSet: {
@@ -218,25 +228,32 @@ const styles = StyleSheet.create({
 
   newsItem: {
     justifyContent: "center",
+
     paddingHorizontal: 12,
   },
 
   newsRow: {
     flexDirection: "row",
     alignItems: "center",
+
+    height: 46,
   },
 
   redDot: {
     width: 7,
     height: 7,
+
     borderRadius: 4,
-    backgroundColor: "#d50000",
+
+    backgroundColor: "#D50000",
+
     marginRight: 7,
   },
 
   newsText: {
     fontSize: 15,
     fontWeight: "600",
+
     includeFontPadding: false,
   },
 });
