@@ -4,6 +4,7 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
   ActivityIndicator,
+  Dimensions,
   Image,
   ScrollView,
   StyleSheet,
@@ -11,14 +12,21 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
+import RenderHTML from "react-native-render-html";
+
 import useTheme from "../theme/useTheme";
+
+const { width } = Dimensions.get("window");
+
+const IMAGE_URL = "https://api.hindustantvlive.com/uploads/images/";
 
 export default function NewsDetailScreen({ route, navigation }) {
   const { slug } = route.params;
+
   const { theme } = useTheme();
+
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
-  const [contentBlocks, setContentBlocks] = useState([]);
 
   useEffect(() => {
     getNewsDetail();
@@ -26,27 +34,24 @@ export default function NewsDetailScreen({ route, navigation }) {
 
   const getNewsDetail = async () => {
     try {
+      setLoading(true);
+
       const response = await axios.get(
         `https://api.hindustantvlive.com/api/news/slug/${slug}`,
       );
 
-      if (response.data.status) {
-        const newsData = response.data.data;
-
-        setNews(newsData);
-
-        try {
-          const parsedContent = JSON.parse(newsData.content);
-
-          if (parsedContent?.blocks) {
-            setContentBlocks(parsedContent.blocks);
-          }
-        } catch (err) {
-          console.log("Content Parse Error:", err);
-        }
+      if (response.data?.status) {
+        setNews(response.data.data);
+      } else {
+        setNews(null);
       }
     } catch (error) {
-      console.log("Detail Error:", error);
+      console.log(
+        "News Detail Error:",
+        error?.response?.data || error?.message,
+      );
+
+      setNews(null);
     } finally {
       setLoading(false);
     }
@@ -89,6 +94,66 @@ export default function NewsDetailScreen({ route, navigation }) {
     );
   }
 
+  const htmlContent = news.content || "";
+
+  const tagsStyles = {
+    body: {
+      color: theme.colors.text,
+      fontSize: 18,
+      lineHeight: 32,
+    },
+
+    p: {
+      color: theme.colors.text,
+      fontSize: 18,
+      lineHeight: 32,
+      marginTop: 0,
+      marginBottom: 18,
+    },
+
+    h2: {
+      color: theme.colors.text,
+      fontSize: 22,
+      lineHeight: 30,
+      fontWeight: "700",
+      marginTop: 18,
+      marginBottom: 12,
+    },
+
+    h3: {
+      color: theme.colors.text,
+      fontSize: 20,
+      lineHeight: 28,
+      fontWeight: "700",
+      marginTop: 15,
+      marginBottom: 10,
+    },
+
+    strong: {
+      fontWeight: "700",
+    },
+
+    a: {
+      color: theme.colors.primary,
+      textDecorationLine: "underline",
+    },
+
+    ul: {
+      marginBottom: 15,
+    },
+
+    ol: {
+      marginBottom: 15,
+    },
+
+    li: {
+      color: theme.colors.text,
+      fontSize: 18,
+      lineHeight: 30,
+      marginBottom: 8,
+    },
+  };
+
   return (
     <View
       style={[
@@ -100,18 +165,24 @@ export default function NewsDetailScreen({ route, navigation }) {
     >
       <TouchableOpacity
         style={styles.backButton}
+        activeOpacity={0.8}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={28} color="#fff" />
       </TouchableOpacity>
 
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Image
-          source={{
-            uri: `https://api.hindustantvlive.com/uploads/images/${news.thumbnail}`,
-          }}
-          style={styles.image}
-        />
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
+        {!!news.thumbnail && (
+          <Image
+            source={{
+              uri: `${IMAGE_URL}${news.thumbnail}`,
+            }}
+            style={styles.image}
+          />
+        )}
 
         <View style={styles.contentContainer}>
           <View
@@ -160,10 +231,21 @@ export default function NewsDetailScreen({ route, navigation }) {
                 },
               ]}
             >
-              {new Date(news.createdAt).toLocaleDateString("en-IN")}
+              {news.createdAt
+                ? new Date(news.createdAt).toLocaleDateString("en-IN")
+                : ""}
             </Text>
 
-            <Text style={styles.metaText}>Top Headlines</Text>
+            <Text
+              style={[
+                styles.metaText,
+                {
+                  color: theme.colors.subText,
+                },
+              ]}
+            >
+              Top Headlines
+            </Text>
           </View>
 
           <View
@@ -175,25 +257,60 @@ export default function NewsDetailScreen({ route, navigation }) {
             ]}
           />
 
-          {contentBlocks.map((block, index) => {
-            if (block.type === "paragraph") {
-              return (
+          {!!htmlContent && (
+            <RenderHTML
+              contentWidth={width - 40}
+              source={{
+                html: htmlContent,
+              }}
+              tagsStyles={tagsStyles}
+              enableExperimentalMarginCollapsing
+            />
+          )}
+
+          {!!news.author?.name && (
+            <View
+              style={[
+                styles.authorBox,
+                {
+                  borderTopColor: theme.colors.border,
+                },
+              ]}
+            >
+              {!!news.author?.profileImage && (
+                <Image
+                  source={{
+                    uri: `${IMAGE_URL}${news.author.profileImage}`,
+                  }}
+                  style={styles.authorImage}
+                />
+              )}
+
+              <View style={styles.authorInfo}>
                 <Text
-                  key={index}
                   style={[
-                    styles.content,
+                    styles.authorLabel,
+                    {
+                      color: theme.colors.subText,
+                    },
+                  ]}
+                >
+                  Published by
+                </Text>
+
+                <Text
+                  style={[
+                    styles.authorName,
                     {
                       color: theme.colors.text,
                     },
                   ]}
                 >
-                  {block.data.text}
+                  {news.author.name}
                 </Text>
-              );
-            }
-
-            return null;
-          })}
+              </View>
+            </View>
+          )}
         </View>
       </ScrollView>
 
@@ -205,7 +322,6 @@ export default function NewsDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    // backgroundColor: "#fff",
   },
 
   loaderContainer: {
@@ -214,77 +330,149 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  scrollContent: {
+    paddingBottom: 40,
+  },
+
+  /* BACK BUTTON */
+
   backButton: {
     position: "absolute",
+
     top: 50,
     left: 16,
-    zIndex: 10,
-    backgroundColor: "rgba(0,0,0,0.5)",
-    borderRadius: 50,
-    padding: 10,
+
+    zIndex: 20,
+
+    width: 46,
+    height: 46,
+
+    borderRadius: 23,
+
+    backgroundColor: "rgba(0,0,0,0.55)",
+
+    justifyContent: "center",
+    alignItems: "center",
   },
+
+  /* IMAGE */
 
   image: {
     width: "100%",
-    height: 260,
+    height: 280,
+
     resizeMode: "cover",
   },
+
+  /* ARTICLE */
 
   contentContainer: {
     padding: 20,
   },
 
+  /* CATEGORY */
+
   categoryBadge: {
-    backgroundColor: "#4a00e0",
     alignSelf: "flex-start",
+
     paddingHorizontal: 12,
     paddingVertical: 5,
+
     borderRadius: 20,
+
     marginBottom: 12,
   },
 
   categoryText: {
     color: "#fff",
-    fontWeight: "600",
+
     fontSize: 12,
+
+    fontWeight: "700",
   },
+
+  /* TITLE */
 
   title: {
     fontSize: 26,
+
     fontWeight: "700",
-    // color: "#111",
-    lineHeight: 34,
-    marginBottom: 10,
+
+    lineHeight: 35,
+
+    marginBottom: 12,
   },
+
+  /* SUBTITLE */
 
   subtitle: {
     fontSize: 16,
-    // color: "#666",
-    lineHeight: 24,
+
+    lineHeight: 25,
+
     marginBottom: 15,
   },
 
+  /* META */
+
   metaRow: {
     flexDirection: "row",
+
     justifyContent: "space-between",
+
+    alignItems: "center",
+
     marginBottom: 15,
   },
 
   metaText: {
     fontSize: 13,
-    // color: "#888",
   },
+
+  /* DIVIDER */
 
   divider: {
     height: 1,
-    backgroundColor: "#eee",
+
     marginBottom: 20,
   },
 
-  content: {
-    fontSize: 18,
-    lineHeight: 32,
-    color: "#333",
-    marginBottom: 18,
+  /* AUTHOR */
+
+  authorBox: {
+    flexDirection: "row",
+
+    alignItems: "center",
+
+    marginTop: 25,
+
+    paddingTop: 20,
+
+    borderTopWidth: 1,
+  },
+
+  authorImage: {
+    width: 45,
+    height: 45,
+
+    borderRadius: 23,
+
+    marginRight: 12,
+  },
+
+  authorInfo: {
+    flex: 1,
+  },
+
+  authorLabel: {
+    fontSize: 12,
+
+    marginBottom: 2,
+  },
+
+  authorName: {
+    fontSize: 15,
+
+    fontWeight: "700",
   },
 });
