@@ -78,12 +78,12 @@ export default function HomeScreen({ navigation }) {
     >
       <ScrollView showsVerticalScrollIndicator={false}>
         <Header navigation={navigation} />
-        <BreakingTicker />
+        <BreakingTicker navigation={navigation} />
 
         {loading ? (
           <Text style={{ marginHorizontal: 16 }}>Loading categories...</Text>
         ) : (
-          <CategorySlider categories={categories} />
+          <CategorySlider categories={categories} navigation={navigation} />
         )}
 
         {/* Trending / Featured News */}

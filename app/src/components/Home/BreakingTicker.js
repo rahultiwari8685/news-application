@@ -51,7 +51,7 @@ export default function BreakingTicker({ navigation }) {
       animation.stop();
       translateX.stopAnimation();
     };
-  }, [news.length, contentWidth]);
+  }, [news.length, contentWidth, translateX]);
 
   /* ==========================================
      NO NEWS
@@ -97,7 +97,9 @@ export default function BreakingTicker({ navigation }) {
             },
           ]}
         >
-          {/* FIRST SET */}
+          {/* ==================================
+              FIRST SET
+          ================================== */}
 
           <View
             style={styles.newsSet}
@@ -119,7 +121,9 @@ export default function BreakingTicker({ navigation }) {
             ))}
           </View>
 
-          {/* SECOND SET */}
+          {/* ==================================
+              SECOND SET
+          ================================== */}
 
           <View style={styles.newsSet}>
             {news.map((item, index) => (
@@ -144,35 +148,40 @@ export default function BreakingTicker({ navigation }) {
 function NewsItem({ item, navigation, textColor }) {
   const handlePress = () => {
     console.log("==============================");
-
     console.log("BREAKING NEWS CLICKED");
-
     console.log("TITLE:", item?.title);
-
     console.log("SLUG:", item?.slug);
-
     console.log("NAVIGATION:", !!navigation);
-
     console.log("==============================");
+
+    /* ========================================
+       CHECK SLUG
+    ======================================== */
 
     if (!item?.slug) {
       console.log("ERROR: News slug is missing");
       return;
     }
 
+    /* ========================================
+       CHECK NAVIGATION
+    ======================================== */
+
     if (!navigation) {
       console.log("ERROR: Navigation object is missing");
       return;
     }
+
+    /* ========================================
+       OPEN NEWS DETAIL
+    ======================================== */
 
     try {
       navigation.navigate("NewsDetail", {
         slug: item.slug,
       });
     } catch (error) {
-      console.log("NAVIGATION ERROR:", error?.message);
-
-      console.log(error);
+      console.log("NAVIGATION ERROR:", error?.message || error);
     }
   };
 
@@ -188,7 +197,7 @@ function NewsItem({ item, navigation, textColor }) {
 
         <View style={styles.redDot} />
 
-        {/* TITLE */}
+        {/* NEWS TITLE */}
 
         <Text
           numberOfLines={1}
@@ -223,6 +232,10 @@ const styles = StyleSheet.create({
     borderBottomColor: "#DDDDDD",
   },
 
+  /* ==========================================
+     LEFT BREAKING BOX
+  ========================================== */
+
   leftBox: {
     width: 100,
     height: "100%",
@@ -248,6 +261,10 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
+  /* ==========================================
+     RIGHT SCROLLING AREA
+  ========================================== */
+
   rightBox: {
     flex: 1,
     height: "100%",
@@ -269,15 +286,15 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
+  /* ==========================================
+     NEWS ITEM
+  ========================================== */
+
   newsItem: {
     justifyContent: "center",
 
     paddingHorizontal: 12,
 
-    /*
-     * Make sure the entire news item
-     * receives the touch.
-     */
     minHeight: 46,
   },
 
@@ -287,6 +304,10 @@ const styles = StyleSheet.create({
 
     height: 46,
   },
+
+  /* ==========================================
+     RED DOT
+  ========================================== */
 
   redDot: {
     width: 7,
@@ -298,6 +319,10 @@ const styles = StyleSheet.create({
 
     marginRight: 7,
   },
+
+  /* ==========================================
+     NEWS TEXT
+  ========================================== */
 
   newsText: {
     fontSize: 20,

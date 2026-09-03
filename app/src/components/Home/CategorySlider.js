@@ -1,8 +1,26 @@
 import { ScrollView, StyleSheet, Text, TouchableOpacity } from "react-native";
 import useTheme from "../../theme/useTheme";
 
-export default function CategorySlider({ categories }) {
+export default function CategorySlider({ categories, navigation }) {
   const { theme } = useTheme();
+
+  const handleCategoryPress = (cat) => {
+    if (!cat?._id) {
+      console.log("Category ID missing");
+      return;
+    }
+
+    console.log("==============================");
+    console.log("CATEGORY CLICKED");
+    console.log("CATEGORY NAME:", cat?.name);
+    console.log("CATEGORY ID:", cat?._id);
+    console.log("==============================");
+
+    navigation.navigate("CategoryNews", {
+      categoryId: cat._id,
+      categoryName: cat.name,
+    });
+  };
 
   return (
     <ScrollView
@@ -13,6 +31,8 @@ export default function CategorySlider({ categories }) {
       {categories.map((cat) => (
         <TouchableOpacity
           key={cat._id}
+          activeOpacity={0.7}
+          onPress={() => handleCategoryPress(cat)}
           style={[
             styles.categoryChip,
             {

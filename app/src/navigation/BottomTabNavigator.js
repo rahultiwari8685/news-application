@@ -1,5 +1,6 @@
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 import useTheme from "../theme/useTheme";
 
@@ -13,6 +14,7 @@ const Tab = createBottomTabNavigator();
 
 export default function BottomTabNavigator() {
   const { theme } = useTheme();
+  const insets = useSafeAreaInsets();
 
   return (
     <Tab.Navigator
@@ -26,8 +28,12 @@ export default function BottomTabNavigator() {
         tabBarStyle: {
           backgroundColor: theme.colors.tabBackground,
           borderTopColor: theme.colors.border,
-          height: 60,
-          paddingBottom: 5,
+
+          // Android navigation bar safe area
+          height: 60 + insets.bottom,
+
+          paddingTop: 5,
+          paddingBottom: insets.bottom + 5,
         },
 
         sceneStyle: {
@@ -58,6 +64,9 @@ export default function BottomTabNavigator() {
             case "Setting":
               iconName = focused ? "person" : "person-outline";
               break;
+
+            default:
+              iconName = "ellipse-outline";
           }
 
           return <Ionicons name={iconName} size={24} color={color} />;
@@ -67,6 +76,7 @@ export default function BottomTabNavigator() {
       <Tab.Screen name="Home" component={HomeScreen} />
 
       <Tab.Screen name="Categories" component={CategoriesScreen} />
+
       <Tab.Screen
         name="Video"
         component={ShortsScreen}
@@ -76,6 +86,7 @@ export default function BottomTabNavigator() {
           ),
         }}
       />
+
       <Tab.Screen name="Bookmarks" component={BookmarksScreen} />
 
       <Tab.Screen name="Setting" component={SettingsScreen} />
