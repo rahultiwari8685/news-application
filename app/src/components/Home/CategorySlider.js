@@ -10,13 +10,18 @@ export default function CategorySlider({ categories, navigation }) {
       return;
     }
 
+    if (!navigation) {
+      console.log("Navigation object missing");
+      return;
+    }
+
     console.log("==============================");
     console.log("CATEGORY CLICKED");
-    console.log("CATEGORY NAME:", cat?.name);
-    console.log("CATEGORY ID:", cat?._id);
+    console.log("CATEGORY NAME:", cat.name);
+    console.log("CATEGORY ID:", cat._id);
     console.log("==============================");
 
-    navigation.navigate("CategoryNews", {
+    navigation.navigate("CategoryNewsScreen", {
       categoryId: cat._id,
       categoryName: cat.name,
     });

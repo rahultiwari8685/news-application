@@ -2,6 +2,7 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
+
 import {
   ActivityIndicator,
   Dimensions,
@@ -27,10 +28,21 @@ export default function NewsDetailScreen({ route, navigation }) {
 
   const [news, setNews] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [bookmarked, setBookmarked] = useState(false);
 
   useEffect(() => {
     getNewsDetail();
+    checkBookmark();
   }, [slug]);
+
+  const checkBookmark = async () => {
+    try {
+      const result = await isBookmarked(slug);
+      setBookmarked(result);
+    } catch (error) {
+      console.log("Bookmark check error:", error);
+    }
+  };
 
   const getNewsDetail = async () => {
     try {
@@ -54,6 +66,24 @@ export default function NewsDetailScreen({ route, navigation }) {
       setNews(null);
     } finally {
       setLoading(false);
+    }
+  };
+
+  const handleBookmark = async () => {
+    if (!news?.slug) {
+      return;
+    }
+
+    try {
+      const result = await toggleBookmark(news);
+
+      setBookmarked(result);
+
+      console.log(
+        result ? "News bookmarked successfully" : "News removed from bookmarks",
+      );
+    } catch (error) {
+      console.log("Bookmark error:", error);
     }
   };
 
@@ -163,12 +193,32 @@ export default function NewsDetailScreen({ route, navigation }) {
         },
       ]}
     >
+      {/* <TouchableOpacity
+        style={styles.backButton}
+        activeOpacity={0.8}
+        onPress={() => navigation.goBack()}
+      >
+        <Ionicons name="arrow-back" size={28} color="#fff" />
+      </TouchableOpacity> */}
+
       <TouchableOpacity
         style={styles.backButton}
         activeOpacity={0.8}
         onPress={() => navigation.goBack()}
       >
         <Ionicons name="arrow-back" size={28} color="#fff" />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        style={styles.bookmarkButton}
+        activeOpacity={0.8}
+        onPress={handleBookmark}
+      >
+        <Ionicons
+          name={bookmarked ? "bookmark" : "bookmark-outline"}
+          size={25}
+          color="#fff"
+        />
       </TouchableOpacity>
 
       <ScrollView
@@ -341,6 +391,25 @@ const styles = StyleSheet.create({
 
     top: 50,
     left: 16,
+
+    zIndex: 20,
+
+    width: 46,
+    height: 46,
+
+    borderRadius: 23,
+
+    backgroundColor: "rgba(0,0,0,0.55)",
+
+    justifyContent: "center",
+    alignItems: "center",
+  },
+
+  bookmarkButton: {
+    position: "absolute",
+
+    top: 50,
+    right: 16,
 
     zIndex: 20,
 
