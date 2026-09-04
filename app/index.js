@@ -13,7 +13,7 @@ export default function Index() {
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen name="Splash" component={SplashScreen} />
       <Stack.Screen name="Login" component={LoginScreen} />
-      <Stack.Screen name="MainTabs" component={BottomTabNavigator} />
+      <Stack.Screen name="MainDrawer" component={BottomTabNavigator} />
       <Stack.Screen name="NewsDetail" component={NewsDetailScreen} />
       <Stack.Screen name="CategoryNewsScreen" component={CategoryNewsScreen} />
       <Stack.Screen name="Bookmarks" component={BookmarksScreen} />
