@@ -8,16 +8,14 @@ import messaging from "@react-native-firebase/messaging";
 import { navigationRef } from "../navigation/navigationRef";
 
 export async function initializeNotifications() {
-  // Create Channel
+
   await notifee.createChannel({
     id: "breaking-news",
     name: "Breaking News",
     importance: AndroidImportance.HIGH,
   });
 
-  /**
-   * Foreground Notification
-   */
+
   messaging().onMessage(async (remoteMessage) => {
     console.log("Foreground Notification");
     console.log(remoteMessage);
@@ -47,9 +45,7 @@ export async function initializeNotifications() {
     });
   });
 
-  /**
-   * Background Click
-   */
+
   messaging().onNotificationOpenedApp((remoteMessage) => {
     if (remoteMessage?.data?.slug) {
       navigationRef.navigate("NewsDetail", {
@@ -58,9 +54,7 @@ export async function initializeNotifications() {
     }
   });
 
-  /**
-   * App Killed
-   */
+
   messaging()
     .getInitialNotification()
     .then((remoteMessage) => {
@@ -71,9 +65,7 @@ export async function initializeNotifications() {
       }
     });
 
-  /**
-   * Notifee Click
-   */
+
   notifee.onForegroundEvent(({ type, detail }) => {
     if (type === EventType.PRESS) {
       const slug = detail.notification?.data?.slug;

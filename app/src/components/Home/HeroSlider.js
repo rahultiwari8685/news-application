@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import {
-    Dimensions,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  Dimensions,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
@@ -60,25 +60,6 @@ export default function HeroSlider({ news, navigation }) {
               colors={["transparent", "rgba(0,0,0,0.25)", "rgba(0,0,0,0.95)"]}
               style={styles.overlay}
             >
-              {/* <View style={styles.topRow}>
-                <View style={styles.liveBadge}>
-                  <Text style={styles.liveText}>LIVE</Text>
-                </View>
-
-                <View style={styles.iconRow}>
-                  <TouchableOpacity>
-                    <Ionicons name="bookmark-outline" color="#fff" size={22} />
-                  </TouchableOpacity>
-
-                  <TouchableOpacity style={{ marginLeft: 15 }}>
-                    <Ionicons
-                      name="share-social-outline"
-                      color="#fff"
-                      size={22}
-                    />
-                  </TouchableOpacity>
-                </View>
-              </View> */}
 
               <View style={styles.category}>
                 <Text style={styles.categoryText}>
@@ -89,10 +70,6 @@ export default function HeroSlider({ news, navigation }) {
               <Text numberOfLines={2} style={styles.title}>
                 {item.title}
               </Text>
-
-              {/* <Text style={styles.date}>
-                {new Date(item.createdAt).toLocaleDateString("en-IN")}
-              </Text> */}
 
               <View style={styles.bottomRow}>
                 <Text style={styles.date}>
@@ -118,7 +95,6 @@ export default function HeroSlider({ news, navigation }) {
         )}
       />
 
-      {/* Pagination */}
 
       <View style={styles.pagination}>
         {news.map((_, index) => (

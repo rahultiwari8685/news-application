@@ -6,6 +6,6 @@ const api = axios.create({
 
 export const getCategories = () => api.get("/categories/getAllCategory");
 
-export const getAllNews = () => api.get("/news/getAllNews");
+export const getAllTextNews = () => api.get("/news/getAllTextNews");
 
 export const getNewsDetail = (slug) => api.get(`/news/slug/${slug}`);

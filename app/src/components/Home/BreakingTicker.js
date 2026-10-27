@@ -23,9 +23,6 @@ export default function BreakingTicker({ navigation }) {
     ? breakingNews.filter((item) => item?.title && item?.slug)
     : [];
 
-  /* ==========================================
-     START MARQUEE
-  ========================================== */
 
   useEffect(() => {
     if (!news.length || contentWidth <= 0) {
@@ -53,9 +50,6 @@ export default function BreakingTicker({ navigation }) {
     };
   }, [news.length, contentWidth, translateX]);
 
-  /* ==========================================
-     NO NEWS
-  ========================================== */
 
   if (!news.length) {
     return null;
@@ -70,9 +64,7 @@ export default function BreakingTicker({ navigation }) {
         },
       ]}
     >
-      {/* ======================================
-          BREAKING LABEL
-      ======================================= */}
+
 
       <View style={styles.leftBox}>
         <Ionicons name="flash" color="#FFFFFF" size={17} />
@@ -80,9 +72,6 @@ export default function BreakingTicker({ navigation }) {
         <Text style={styles.breakingText}>BREAKING</Text>
       </View>
 
-      {/* ======================================
-          SCROLLING AREA
-      ======================================= */}
 
       <View style={styles.rightBox}>
         <Animated.View
@@ -97,9 +86,6 @@ export default function BreakingTicker({ navigation }) {
             },
           ]}
         >
-          {/* ==================================
-              FIRST SET
-          ================================== */}
 
           <View
             style={styles.newsSet}
@@ -121,9 +107,6 @@ export default function BreakingTicker({ navigation }) {
             ))}
           </View>
 
-          {/* ==================================
-              SECOND SET
-          ================================== */}
 
           <View style={styles.newsSet}>
             {news.map((item, index) => (
@@ -141,9 +124,6 @@ export default function BreakingTicker({ navigation }) {
   );
 }
 
-/* ============================================
-   NEWS ITEM
-============================================= */
 
 function NewsItem({ item, navigation, textColor }) {
   const handlePress = () => {
@@ -154,27 +134,19 @@ function NewsItem({ item, navigation, textColor }) {
     console.log("NAVIGATION:", !!navigation);
     console.log("==============================");
 
-    /* ========================================
-       CHECK SLUG
-    ======================================== */
+
 
     if (!item?.slug) {
       console.log("ERROR: News slug is missing");
       return;
     }
 
-    /* ========================================
-       CHECK NAVIGATION
-    ======================================== */
 
     if (!navigation) {
       console.log("ERROR: Navigation object is missing");
       return;
     }
 
-    /* ========================================
-       OPEN NEWS DETAIL
-    ======================================== */
 
     try {
       navigation.navigate("NewsDetail", {
@@ -193,11 +165,8 @@ function NewsItem({ item, navigation, textColor }) {
       style={styles.newsItem}
     >
       <View style={styles.newsRow}>
-        {/* RED DOT */}
 
         <View style={styles.redDot} />
-
-        {/* NEWS TITLE */}
 
         <Text
           numberOfLines={1}
@@ -216,9 +185,6 @@ function NewsItem({ item, navigation, textColor }) {
   );
 }
 
-/* ============================================
-   STYLES
-============================================= */
 
 const styles = StyleSheet.create({
   container: {
@@ -232,9 +198,6 @@ const styles = StyleSheet.create({
     borderBottomColor: "#DDDDDD",
   },
 
-  /* ==========================================
-     LEFT BREAKING BOX
-  ========================================== */
 
   leftBox: {
     width: 100,
@@ -261,9 +224,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
-  /* ==========================================
-     RIGHT SCROLLING AREA
-  ========================================== */
 
   rightBox: {
     flex: 1,
@@ -286,9 +246,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-  /* ==========================================
-     NEWS ITEM
-  ========================================== */
+
 
   newsItem: {
     justifyContent: "center",
@@ -305,9 +263,6 @@ const styles = StyleSheet.create({
     height: 46,
   },
 
-  /* ==========================================
-     RED DOT
-  ========================================== */
 
   redDot: {
     width: 7,
@@ -320,9 +275,6 @@ const styles = StyleSheet.create({
     marginRight: 7,
   },
 
-  /* ==========================================
-     NEWS TEXT
-  ========================================== */
 
   newsText: {
     fontSize: 20,

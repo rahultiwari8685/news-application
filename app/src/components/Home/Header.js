@@ -18,7 +18,6 @@ export default function Header({ navigation }) {
 
   const { isLive, videoId } = useLiveStatus();
 
-  // LIVE Dot Animation
   const opacity = useRef(new Animated.Value(1)).current;
 
   useEffect(() => {

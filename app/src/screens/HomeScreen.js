@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/news/getAllNews?limit=20",
+        "https://api.topheadlinesnews.com/api/news/getAllTextNews?limit=20",
       );
 
       if (response.data.status) {
@@ -86,40 +86,6 @@ export default function HomeScreen({ navigation }) {
           <CategorySlider categories={categories} navigation={navigation} />
         )}
 
-        {/* Trending / Featured News */}
-        {/* <Text
-          style={[
-            styles.sectionTitle,
-            {
-              color: theme.colors.text,
-            },
-          ]}
-        >
-          Trending News
-        </Text>
-        <ScrollView horizontal showsHorizontalScrollIndicator={false}>
-          {news.slice(0, 5).map((item) => (
-            <TouchableOpacity
-              key={item._id}
-              style={styles.trendingCard}
-              onPress={() =>
-                navigation.navigate("NewsDetail", {
-                  slug: item.slug,
-                })
-              }
-            >
-              <Image
-                source={{
-                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
-                }}
-                style={styles.trendingImage}
-              />
-              <View style={styles.trendingOverlay}>
-                <Text style={styles.trendingTitle}>{item.title}</Text>
-              </View>
-            </TouchableOpacity>
-          ))}
-        </ScrollView> */}
 
         <Text
           style={[
@@ -132,10 +98,9 @@ export default function HomeScreen({ navigation }) {
           Top Stories
         </Text>
 
-        {/* <HeroSlider news={news.slice(0, 5)} navigation={navigation} /> */}
         <HeroSlider news={news.slice(0, 5)} navigation={navigation} />
 
-        {/* Latest Articles */}
+      
         <Text
           style={[
             styles.sectionTitle,
@@ -193,9 +158,6 @@ export default function HomeScreen({ navigation }) {
                   {item.title}
                 </Text>
 
-                {/* <Text style={styles.articleSnippet} numberOfLines={2}>
-                  {item.subtitle}
-                </Text> */}
               </View>
             </TouchableOpacity>
           )}
@@ -203,18 +165,7 @@ export default function HomeScreen({ navigation }) {
         />
       </ScrollView>
 
-      {/* Floating Action Button */}
-      {/* <TouchableOpacity
-        style={[
-          styles.fab,
-          {
-            backgroundColor: theme.colors.primary,
-          },
-        ]}
-        onPress={() => navigation.navigate("Bookmarks")} // example action
-      >
-        <Ionicons name="bookmark-outline" size={28} color="#fff" />
-      </TouchableOpacity> */}
+    
       <StatusBar style={theme.dark ? "light" : "dark"} />
     </View>
   );

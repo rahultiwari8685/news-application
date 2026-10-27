@@ -4,14 +4,14 @@ import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 
 import {
-    ActivityIndicator,
-    Dimensions,
-    Image,
-    ScrollView,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Dimensions,
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import RenderHTML from "react-native-render-html";
 
@@ -193,13 +193,6 @@ export default function NewsDetailScreen({ route, navigation }) {
         },
       ]}
     >
-      {/* <TouchableOpacity
-        style={styles.backButton}
-        activeOpacity={0.8}
-        onPress={() => navigation.goBack()}
-      >
-        <Ionicons name="arrow-back" size={28} color="#fff" />
-      </TouchableOpacity> */}
 
       <TouchableOpacity
         style={styles.backButton}
@@ -433,13 +426,11 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 
-  /* ARTICLE */
 
   contentContainer: {
     padding: 20,
   },
 
-  /* CATEGORY */
 
   categoryBadge: {
     alignSelf: "flex-start",
@@ -460,7 +451,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
-  /* TITLE */
 
   title: {
     fontSize: 26,
@@ -472,7 +462,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-  /* SUBTITLE */
 
   subtitle: {
     fontSize: 16,
@@ -482,7 +471,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
   },
 
-  /* META */
 
   metaRow: {
     flexDirection: "row",
@@ -498,7 +486,6 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-  /* DIVIDER */
 
   divider: {
     height: 1,
@@ -506,7 +493,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 
-  /* AUTHOR */
 
   authorBox: {
     flexDirection: "row",

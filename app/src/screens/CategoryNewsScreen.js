@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
-    ActivityIndicator,
-    FlatList,
-    Image,
-    Pressable,
-    StyleSheet,
-    Text,
-    View,
+  ActivityIndicator,
+  FlatList,
+  Image,
+  Pressable,
+  StyleSheet,
+  Text,
+  View,
 } from "react-native";
 import useTheme from "../theme/useTheme";
 export default function CategoryNewsScreen({ route, navigation }) {
@@ -116,32 +116,6 @@ export default function CategoryNewsScreen({ route, navigation }) {
                 {item.title}
               </Text>
 
-              {/* {!!item.subtitle && (
-                <Text numberOfLines={3} style={styles.subtitle}>
-                  {item.subtitle}
-                </Text>
-              )} */}
-
-              {/* <View style={styles.footer}>
-                <View style={styles.authorRow}>
-                  <Ionicons
-                    name="person-circle-outline"
-                    size={18}
-                    color="#E53935"
-                  />
-
-                  <Text style={styles.author}>{item.author?.name}</Text>
-                </View>
-
-                <View style={styles.dateRow}>
-                  <Ionicons name="calendar-outline" size={16} color="#888" />
-
-                  <Text style={styles.date}>
-                    {new Date(item.createdAt).toLocaleDateString("en-IN")}
-                  </Text>
-                </View>
-              </View> */}
-
               <View style={styles.readMore}>
                 <Text style={styles.readMoreText}>Read Full Story</Text>
 
@@ -226,9 +200,6 @@ const styles = StyleSheet.create({
     lineHeight: 23,
   },
 
-  // footer: {
-  //   marginTop: 18,
-  // },
 
   authorRow: {
     flexDirection: "row",

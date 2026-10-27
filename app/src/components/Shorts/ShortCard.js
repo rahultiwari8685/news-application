@@ -1,14 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {
-    ActivityIndicator,
-    Dimensions,
-    Pressable,
-    Share,
-    StyleSheet,
-    Text,
-    TouchableOpacity,
-    View,
+  ActivityIndicator,
+  Dimensions,
+  Pressable,
+  Share,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
 
 import { VideoView, useVideoPlayer } from "expo-video";
@@ -69,21 +69,6 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
     return () => ready.remove();
   }, [player]);
 
-  // useEffect(() => {
-  //   if (!player) return;
-
-  //   const interval = setInterval(() => {
-  //     if (player.currentTime != null) {
-  //       setProgress(player.currentTime);
-  //     }
-
-  //     if (player.duration != null) {
-  //       setDuration(player.duration);
-  //     }
-  //   }, 200);
-
-  //   return () => clearInterval(interval);
-  // }, []);
 
   useEffect(() => {
     if (!player) return;
@@ -129,7 +114,6 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
         <ActivityIndicator size="large" color="#fff" style={styles.loader} />
       )}
 
-      {/* Video */}
 
       <Pressable
         style={StyleSheet.absoluteFill}
