@@ -1,14 +1,14 @@
 import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import {
-  ActivityIndicator,
-  Dimensions,
-  Pressable,
-  Share,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    ActivityIndicator,
+    Dimensions,
+    Pressable,
+    Share,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 import { VideoView, useVideoPlayer } from "expo-video";
@@ -25,7 +25,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(1);
 
-  const videoUrl = `https://api.topheadlinesnews,com/uploads/videos/${item.video}`;
+  const videoUrl = `https://api.topheadlinesnews.com/uploads/videos/${item.video}`;
 
   const player = useVideoPlayer(videoUrl, (player) => {
     player.loop = false;

@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews,com/api/categories/getAllCategory",
+        "https://api.topheadlinesnews.com/api/categories/getAllCategory",
       );
 
       if (response.data.success) {
@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews,com/api/news/getAllNews?limit=20",
+        "https://api.topheadlinesnews.com/api/news/getAllNews?limit=20",
       );
 
       if (response.data.status) {
@@ -110,7 +110,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.topheadlinesnews,com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.trendingImage}
               />
@@ -165,7 +165,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.topheadlinesnews,com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.articleImage}
               />

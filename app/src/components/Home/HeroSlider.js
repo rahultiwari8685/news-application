@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useState } from "react";
 import {
-  Dimensions,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Dimensions,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 import { useSharedValue } from "react-native-reanimated";
 import Carousel from "react-native-reanimated-carousel";
@@ -50,7 +50,7 @@ export default function HeroSlider({ news, navigation }) {
             <Image
               source={{
                 uri:
-                  "https://api.topheadlinesnews,com/uploads/images/" +
+                  "https://api.topheadlinesnews.com/uploads/images/" +
                   item.thumbnail,
               }}
               style={styles.image}

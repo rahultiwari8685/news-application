@@ -2,13 +2,13 @@ import { Ionicons } from "@expo/vector-icons";
 import axios from "axios";
 import { useEffect, useState } from "react";
 import {
-  ActivityIndicator,
-  FlatList,
-  Image,
-  Pressable,
-  StyleSheet,
-  Text,
-  View,
+    ActivityIndicator,
+    FlatList,
+    Image,
+    Pressable,
+    StyleSheet,
+    Text,
+    View,
 } from "react-native";
 import useTheme from "../theme/useTheme";
 export default function CategoryNewsScreen({ route, navigation }) {
@@ -26,7 +26,7 @@ export default function CategoryNewsScreen({ route, navigation }) {
   const getNews = async () => {
     try {
       const res = await axios.get(
-        `https://api.topheadlinesnews,com/api/news/category/${categoryId}`,
+        `https://api.topheadlinesnews.com/api/news/category/${categoryId}`,
       );
 
       if (res.data.status) {
@@ -92,7 +92,7 @@ export default function CategoryNewsScreen({ route, navigation }) {
             <Image
               source={{
                 uri:
-                  "https://api.topheadlinesnews,com/uploads/images/" +
+                  "https://api.topheadlinesnews.com/uploads/images/" +
                   item.thumbnail,
               }}
               style={styles.image}
