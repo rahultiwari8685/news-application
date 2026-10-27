@@ -34,27 +34,7 @@ export default function App() {
     setupNotifications();
   }, []);
 
-  // const initPush = async () => {
-  //   const token = await registerFCM();
 
-  //   console.log("FCM Token:", token);
-
-  //   if (!token) return;
-
-  //   try {
-  //     await axios.post(
-  //       "https://api.hindustantvlive.com/api/notification/save-token",
-  //       {
-  //         token,
-  //         platform: Platform.OS,
-  //       },
-  //     );
-
-  //     console.log("Token Saved");
-  //   } catch (e) {
-  //     console.log(e.response?.data || e.message);
-  //   }
-  // };
 
   const initPush = async () => {
     console.log("STEP 1");
@@ -74,7 +54,7 @@ export default function App() {
       console.log("STEP 3");
 
       const response = await axios.post(
-        "https://api.hindustantvlive.com/api/notification/save-token",
+        "https://api.topheadlinesnews,com/api/notification/save-token",
         {
           token,
           platform: Platform.OS,

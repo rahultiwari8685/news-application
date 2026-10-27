@@ -19,7 +19,7 @@ import useTheme from "../theme/useTheme";
 
 const { width } = Dimensions.get("window");
 
-const IMAGE_URL = "https://api.hindustantvlive.com/uploads/images/";
+const IMAGE_URL = "https://api.topheadlinesnews,com/uploads/images/";
 
 export default function NewsDetailScreen({ route, navigation }) {
   const { slug } = route.params;
@@ -49,7 +49,7 @@ export default function NewsDetailScreen({ route, navigation }) {
       setLoading(true);
 
       const response = await axios.get(
-        `https://api.hindustantvlive.com/api/news/slug/${slug}`,
+        `https://api.topheadlinesnews,com/api/news/slug/${slug}`,
       );
 
       if (response.data?.status) {

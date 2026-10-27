@@ -25,7 +25,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(1);
 
-  const videoUrl = `https://api.hindustantvlive.com/uploads/videos/${item.video}`;
+  const videoUrl = `https://api.topheadlinesnews,com/uploads/videos/${item.video}`;
 
   const player = useVideoPlayer(videoUrl, (player) => {
     player.loop = false;

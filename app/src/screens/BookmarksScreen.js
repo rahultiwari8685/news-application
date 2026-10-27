@@ -13,7 +13,7 @@ import {
 import useTheme from "../theme/useTheme";
 import { getBookmarks, removeBookmark } from "../utils/bookmarkStorage";
 
-const IMAGE_URL = "https://api.hindustantvlive.com/uploads/images/";
+const IMAGE_URL = "https://api.topheadlinesnews,com/uploads/images/";
 
 export default function BookmarksScreen({ navigation }) {
   const { theme } = useTheme();

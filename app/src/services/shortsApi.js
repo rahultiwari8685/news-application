@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API = "https://api.hindustantvlive.com";
+const API = "https://api.topheadlinesnews,com";
 
 export const getShorts = async () => {
   try {

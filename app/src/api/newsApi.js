@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const BASE_URL = "https://api.hindustantvlive.com/api";
+const BASE_URL = "https://api.topheadlinesnews,com/api";
 
 export const getLiveStatus = async () => {
   try {
