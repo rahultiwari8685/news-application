@@ -65,7 +65,7 @@ export default function Header({ navigation }) {
     >
       <View style={styles.leftSection}>
         <Image
-          source={require("../../../../assets/images/TH_Logo.png")}
+          source={require("../../../../assets/images/B19_logo.png")}
           style={styles.logo}
         />
       </View>

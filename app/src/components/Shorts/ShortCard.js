@@ -25,7 +25,7 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
   const [progress, setProgress] = useState(0);
   const [duration, setDuration] = useState(1);
 
-  const videoUrl = `https://api.topheadlinesnews.com/uploads/videos/${item.video}`;
+  const videoUrl = `https://api.bharat19express.com/uploads/videos/${item.video}`;
 
   const player = useVideoPlayer(videoUrl, (player) => {
     player.loop = false;
@@ -68,7 +68,6 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
 
     return () => ready.remove();
   }, [player]);
-
 
   useEffect(() => {
     if (!player) return;
@@ -113,7 +112,6 @@ export default function ShortCard({ item, isActive, onVideoEnd, navigation }) {
       {loading && (
         <ActivityIndicator size="large" color="#fff" style={styles.loader} />
       )}
-
 
       <Pressable
         style={StyleSheet.absoluteFill}

@@ -16,7 +16,7 @@ export default function SplashScreen({ navigation }) {
       <View style={styles.logoContainer}>
         <View style={styles.logoCircle}>
           <Image
-            source={require("../../../assets/images/TH_Logo.png")}
+            source={require("../../../assets/images/B19_logo.png")}
             style={styles.logo}
           />
         </View>

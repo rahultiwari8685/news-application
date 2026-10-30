@@ -28,7 +28,7 @@ export default function CategoriesScreen() {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/categories/getAllCategory",
+        "https://api.bharat19express.com/api/categories/getAllCategory",
       );
 
       if (response.data.success) {

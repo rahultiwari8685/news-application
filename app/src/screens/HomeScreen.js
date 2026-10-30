@@ -31,7 +31,7 @@ export default function HomeScreen({ navigation }) {
   const getCategories = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/categories/getAllCategory",
+        "https://api.bharat19express.com/api/categories/getAllCategory",
       );
 
       if (response.data.success) {
@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.topheadlinesnews.com/api/news/getAllTextNews?limit=20",
+        "https://api.bharat19express.com/api/news/getAllTextNews?limit=20",
       );
 
       if (response.data.status) {
@@ -86,7 +86,6 @@ export default function HomeScreen({ navigation }) {
           <CategorySlider categories={categories} navigation={navigation} />
         )}
 
-
         <Text
           style={[
             styles.sectionTitle,
@@ -100,7 +99,6 @@ export default function HomeScreen({ navigation }) {
 
         <HeroSlider news={news.slice(0, 5)} navigation={navigation} />
 
-      
         <Text
           style={[
             styles.sectionTitle,
@@ -130,7 +128,7 @@ export default function HomeScreen({ navigation }) {
             >
               <Image
                 source={{
-                  uri: `https://api.topheadlinesnews.com/uploads/images/${item.thumbnail}`,
+                  uri: `https://api.bharat19express.com/uploads/images/${item.thumbnail}`,
                 }}
                 style={styles.articleImage}
               />
@@ -157,7 +155,6 @@ export default function HomeScreen({ navigation }) {
                 >
                   {item.title}
                 </Text>
-
               </View>
             </TouchableOpacity>
           )}
@@ -165,7 +162,6 @@ export default function HomeScreen({ navigation }) {
         />
       </ScrollView>
 
-    
       <StatusBar style={theme.dark ? "light" : "dark"} />
     </View>
   );

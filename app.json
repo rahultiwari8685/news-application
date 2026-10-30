@@ -1,10 +1,10 @@
 {
   "expo": {
-    "name": "Top Headlines",
+    "name": "Bharat19Express",
     "slug": "top-headlines",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/TH_Logo.png",
+    "icon": "./assets/images/B19_logo.png",
     "scheme": "topheadlines",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -18,14 +18,14 @@
   "edgeToEdgeEnabled": true,
   "predictiveBackGestureEnabled": false,
   "adaptiveIcon": {
-    "foregroundImage": "./assets/images/TH_Logo.png",
+    "foregroundImage": "./assets/images/B19_adaptive_icon.png",
     "backgroundColor": "#E6F4FE"
   }
 },
     
     "web": {
       "output": "static",
-      "favicon": "./assets/images/TH_Logo.png"
+      "favicon": "./assets/images/B19_logo.png"
     },
   "plugins": [
   "expo-router",
@@ -33,7 +33,7 @@
   [
     "expo-splash-screen",
     {
-      "image": "./assets/images/TH_Logo.png",
+      "image": "./assets/images/B19_logo.png",
       "imageWidth": 200,
       "resizeMode": "contain",
       "backgroundColor": "#ffffff",

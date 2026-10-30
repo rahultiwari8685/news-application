@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://api.topheadlinesnews.com/api",
+  baseURL: "https://api.bharat19express.com/api",
 });
 
 export const getCategories = () => api.get("/categories/getAllCategory");

@@ -34,8 +34,6 @@ export default function App() {
     setupNotifications();
   }, []);
 
-
-
   const initPush = async () => {
     console.log("STEP 1");
 
@@ -54,7 +52,7 @@ export default function App() {
       console.log("STEP 3");
 
       const response = await axios.post(
-        "https://api.topheadlinesnews.com/api/notification/save-token",
+        "https://api.bharat19express.com/api/notification/save-token",
         {
           token,
           platform: Platform.OS,

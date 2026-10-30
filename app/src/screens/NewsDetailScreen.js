@@ -19,7 +19,7 @@ import useTheme from "../theme/useTheme";
 
 const { width } = Dimensions.get("window");
 
-const IMAGE_URL = "https://api.topheadlinesnews.com/uploads/images/";
+const IMAGE_URL = "https://api.bharat19express.com/uploads/images/";
 
 export default function NewsDetailScreen({ route, navigation }) {
   const { slug } = route.params;
@@ -49,7 +49,7 @@ export default function NewsDetailScreen({ route, navigation }) {
       setLoading(true);
 
       const response = await axios.get(
-        `https://api.topheadlinesnews.com/api/news/slug/${slug}`,
+        `https://api.bharat19express.com/api/news/slug/${slug}`,
       );
 
       if (response.data?.status) {
@@ -193,7 +193,6 @@ export default function NewsDetailScreen({ route, navigation }) {
         },
       ]}
     >
-
       <TouchableOpacity
         style={styles.backButton}
         activeOpacity={0.8}
@@ -426,11 +425,9 @@ const styles = StyleSheet.create({
     resizeMode: "cover",
   },
 
-
   contentContainer: {
     padding: 20,
   },
-
 
   categoryBadge: {
     alignSelf: "flex-start",
@@ -451,7 +448,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
 
-
   title: {
     fontSize: 26,
 
@@ -462,7 +458,6 @@ const styles = StyleSheet.create({
     marginBottom: 12,
   },
 
-
   subtitle: {
     fontSize: 16,
 
@@ -470,7 +465,6 @@ const styles = StyleSheet.create({
 
     marginBottom: 15,
   },
-
 
   metaRow: {
     flexDirection: "row",
@@ -486,13 +480,11 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 
-
   divider: {
     height: 1,
 
     marginBottom: 20,
   },
-
 
   authorBox: {
     flexDirection: "row",

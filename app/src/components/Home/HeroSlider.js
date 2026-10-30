@@ -50,7 +50,7 @@ export default function HeroSlider({ news, navigation }) {
             <Image
               source={{
                 uri:
-                  "https://api.topheadlinesnews.com/uploads/images/" +
+                  "https://api.bharat19express.com/uploads/images/" +
                   item.thumbnail,
               }}
               style={styles.image}
@@ -60,7 +60,6 @@ export default function HeroSlider({ news, navigation }) {
               colors={["transparent", "rgba(0,0,0,0.25)", "rgba(0,0,0,0.95)"]}
               style={styles.overlay}
             >
-
               <View style={styles.category}>
                 <Text style={styles.categoryText}>
                   {item.categories?.[0]?.name || "News"}
@@ -94,7 +93,6 @@ export default function HeroSlider({ news, navigation }) {
           </Pressable>
         )}
       />
-
 
       <View style={styles.pagination}>
         {news.map((_, index) => (

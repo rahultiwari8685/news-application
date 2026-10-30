@@ -27,7 +27,7 @@ export default function LoginScreen({ navigation }) {
         style={styles.innerContainer}
       >
         <Image
-          source={require("../../../assets/images/TH_Logo.png")}
+          source={require("../../../assets/images/B19_logo.png")}
           style={styles.logo}
         />
 
