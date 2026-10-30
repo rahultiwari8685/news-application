@@ -50,7 +50,7 @@ export default function HomeScreen({ navigation }) {
   const getNews = async () => {
     try {
       const response = await axios.get(
-        "https://api.bharat19express.com/api/news/getAllTextNews?limit=20",
+        "https://api.bharat19express.com/api/news/getAllNews?limit=20",
       );
 
       if (response.data.status) {
