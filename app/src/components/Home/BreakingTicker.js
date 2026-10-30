@@ -23,7 +23,6 @@ export default function BreakingTicker({ navigation }) {
     ? breakingNews.filter((item) => item?.title && item?.slug)
     : [];
 
-
   useEffect(() => {
     if (!news.length || contentWidth <= 0) {
       return;
@@ -50,7 +49,6 @@ export default function BreakingTicker({ navigation }) {
     };
   }, [news.length, contentWidth, translateX]);
 
-
   if (!news.length) {
     return null;
   }
@@ -64,14 +62,11 @@ export default function BreakingTicker({ navigation }) {
         },
       ]}
     >
-
-
       <View style={styles.leftBox}>
         <Ionicons name="flash" color="#FFFFFF" size={17} />
 
         <Text style={styles.breakingText}>BREAKING</Text>
       </View>
-
 
       <View style={styles.rightBox}>
         <Animated.View
@@ -86,7 +81,6 @@ export default function BreakingTicker({ navigation }) {
             },
           ]}
         >
-
           <View
             style={styles.newsSet}
             onLayout={(event) => {
@@ -107,7 +101,6 @@ export default function BreakingTicker({ navigation }) {
             ))}
           </View>
 
-
           <View style={styles.newsSet}>
             {news.map((item, index) => (
               <NewsItem
@@ -124,7 +117,6 @@ export default function BreakingTicker({ navigation }) {
   );
 }
 
-
 function NewsItem({ item, navigation, textColor }) {
   const handlePress = () => {
     console.log("==============================");
@@ -134,19 +126,15 @@ function NewsItem({ item, navigation, textColor }) {
     console.log("NAVIGATION:", !!navigation);
     console.log("==============================");
 
-
-
     if (!item?.slug) {
       console.log("ERROR: News slug is missing");
       return;
     }
 
-
     if (!navigation) {
       console.log("ERROR: Navigation object is missing");
       return;
     }
-
 
     try {
       navigation.navigate("NewsDetail", {
@@ -165,7 +153,6 @@ function NewsItem({ item, navigation, textColor }) {
       style={styles.newsItem}
     >
       <View style={styles.newsRow}>
-
         <View style={styles.redDot} />
 
         <Text
@@ -185,7 +172,6 @@ function NewsItem({ item, navigation, textColor }) {
   );
 }
 
-
 const styles = StyleSheet.create({
   container: {
     width: "100%",
@@ -197,7 +183,6 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.5,
     borderBottomColor: "#DDDDDD",
   },
-
 
   leftBox: {
     width: 100,
@@ -224,7 +209,6 @@ const styles = StyleSheet.create({
     letterSpacing: 0.5,
   },
 
-
   rightBox: {
     flex: 1,
     height: "100%",
@@ -246,8 +230,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 
-
-
   newsItem: {
     justifyContent: "center",
 
@@ -263,7 +245,6 @@ const styles = StyleSheet.create({
     height: 46,
   },
 
-
   redDot: {
     width: 7,
     height: 7,
@@ -274,7 +255,6 @@ const styles = StyleSheet.create({
 
     marginRight: 7,
   },
-
 
   newsText: {
     fontSize: 20,
