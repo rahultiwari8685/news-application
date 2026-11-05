@@ -286,7 +286,7 @@ export default function NewsDetailScreen({ route, navigation }) {
                 },
               ]}
             >
-              Top Headlines
+              Bharat19Express
             </Text>
           </View>
 
@@ -364,6 +364,7 @@ export default function NewsDetailScreen({ route, navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    marginTop: 10,
   },
 
   loaderContainer: {

@@ -1,13 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useEffect, useRef } from "react";
 import {
-  Animated,
-  Image,
-  Linking,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
+    Animated,
+    Image,
+    Linking,
+    StyleSheet,
+    Text,
+    TouchableOpacity,
+    View,
 } from "react-native";
 
 import useLiveStatus from "../../hooks/useLiveStatus";
@@ -65,7 +65,7 @@ export default function Header({ navigation }) {
     >
       <View style={styles.leftSection}>
         <Image
-          source={require("../../../../assets/images/B19_logo.png")}
+          source={require("../../../../assets/images/B19_Logo.png")}
           style={styles.logo}
         />
       </View>
@@ -136,7 +136,7 @@ const styles = StyleSheet.create({
   },
 
   logo: {
-    width: 200,
+    width: 180,
     height: 150,
     resizeMode: "contain",
   },

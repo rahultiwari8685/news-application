@@ -27,11 +27,11 @@ export default function LoginScreen({ navigation }) {
         style={styles.innerContainer}
       >
         <Image
-          source={require("../../../assets/images/B19_logo.png")}
+          source={require("../../../assets/images/B19_Logo.png")}
           style={styles.logo}
         />
 
-        <Text style={styles.title}>Top Headlines</Text>
+        <Text style={styles.title}>Bharat19Express</Text>
 
         <View style={styles.inputContainer}>
           <View style={styles.inputWrapper}>

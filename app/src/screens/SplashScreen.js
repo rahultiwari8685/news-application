@@ -16,13 +16,13 @@ export default function SplashScreen({ navigation }) {
       <View style={styles.logoContainer}>
         <View style={styles.logoCircle}>
           <Image
-            source={require("../../../assets/images/B19_logo.png")}
+            source={require("../../../assets/images/B19_Logo.png")}
             style={styles.logo}
           />
         </View>
       </View>
 
-      <Text style={styles.title}>Top Headlines</Text>
+      <Text style={styles.title}>Bharat19Express</Text>
       <Text style={styles.tagline}>Stay Updated, Stay Ahead</Text>
 
       <ActivityIndicator size="large" color="#fff" style={styles.loader} />

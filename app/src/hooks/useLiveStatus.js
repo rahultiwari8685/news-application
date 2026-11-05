@@ -44,7 +44,7 @@
 //   };
 // }
 
-```javascript
+
 import { useCallback, useEffect, useState } from "react";
 import { AppState } from "react-native";
 import { getLiveStatus } from "../api/newsApi";
@@ -95,4 +95,4 @@ export default function useLiveStatus() {
 
   return { isLive, videoId, loading };
 }
-```;
+

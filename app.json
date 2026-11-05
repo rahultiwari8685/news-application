@@ -4,7 +4,7 @@
     "slug": "top-headlines",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/images/B19_logo.png",
+    "icon": "./assets/images/B19_Logo.png",
     "scheme": "topheadlines",
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
@@ -12,40 +12,38 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.rahultiwari8685.topheadlines"
     },
-   "android": {
-  "package": "com.rahultiwari8685.topheadlines",
-  "googleServicesFile": "./google-services.json",
-  "edgeToEdgeEnabled": true,
-  "predictiveBackGestureEnabled": false,
-  "adaptiveIcon": {
-    "foregroundImage": "./assets/images/B19_adaptive_icon.png",
-    "backgroundColor": "#E6F4FE"
-  }
-},
-    
+    "android": {
+      "package": "com.rahultiwari8685.topheadlines",
+      "googleServicesFile": "./google-services.json",
+      "edgeToEdgeEnabled": true,
+      "predictiveBackGestureEnabled": false,
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/images/B19_adaptive_icon.png",
+        "backgroundColor": "#E6F4FE"
+      }
+    },
     "web": {
       "output": "static",
-      "favicon": "./assets/images/B19_logo.png"
+      "favicon": "./assets/images/B19_Logo.png"
     },
-  "plugins": [
-  "expo-router",
-
-  [
-    "expo-splash-screen",
-    {
-      "image": "./assets/images/B19_logo.png",
-      "imageWidth": 200,
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff",
-      "dark": {
-        "backgroundColor": "#000000"
-      }
-    }
-  ],
-
-  "expo-video",
-  "react-native-video"
-],
+    "plugins": [
+      "expo-router",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/images/B19_Logo.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#ffffff",
+          "dark": {
+            "backgroundColor": "#000000"
+          }
+        }
+      ],
+      "expo-video",
+      "react-native-video",
+      "expo-web-browser"
+    ],
     "experiments": {
       "typedRoutes": true,
       "reactCompiler": true
